@@ -38,13 +38,14 @@ def pin_status(pin_number):
 
 
 def pin_update(pin_number, value):
-    if pin_number in VALID_BCM_PIN_NUMBERS:
+    if pin_number in VALID_BCM_PIN_NUMBERS and 
+            value in VALID_HIGH_VALUES + VALID_LOW_VALUES:
         GPIO.input(pin_number, value)
         data = {'status': 'SUCCESS',
                 'error': None}
     else:
         data = {'status': 'ERROR',
-                'error': 'Invalid pin number.'}
+                'error': 'Invalid pin number or value.'}
 
     return data
 
