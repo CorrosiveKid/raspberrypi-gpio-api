@@ -1,6 +1,41 @@
 $(document).ready(function() {
-
+    buildHTML();
+    //updateSwitches();
+    $(".flipswitch").on('change', function(){
+        console.log($(this).attr("pin-number") + ' - ' + $(this).val());
+    });
 });
+
+function buildHTML(){
+    // var pins = getPinStatus();
+    var pins = getPinStatusTest();
+    pins.forEach(function(pin) {
+        var $listItem = $("<li></li>");
+        var $label = $("<label for='flip-select-"+ pin.pin_number +"'>" + pin.pin_name + "</label>");
+        var $select = $("<select id='flip-select-" + pin.pin_number + "' data-role='slider' pin-number='" + pin.pin_number + "' name='flip-select-" + pin.pin_number + "' class='flipswitch'></select>");
+        var $optionOn = $("<option>On</option>");
+        var $optionOff = $("<option>Off</option>");
+        $select.append($optionOff, $optionOn);
+        $listItem.append($label, $select);
+        $("#switches").append($listItem);
+    });
+}
+
+function updateSwitches(){
+    // var pins = getPinStatus();
+    var pins = getPinStatusTest();
+    console.log("Updating Switches")
+    pins.forEach(function(pin) {
+        var id = "#flip-select-" + pin.pin_number;
+
+        if (pin.value == 0){
+            $(id).val('Off').slider('refresh');
+        }
+        else{
+            $(id).val('On').slider('refresh');
+        }
+    });
+}
 
 function getPinStatus(){
     var data;
@@ -16,7 +51,7 @@ function getPinStatus(){
         console.log("GET: " + apiEndpoint  + " - Failed!");
     });
 
-    return data;
+    return data.data;
 }
 
 function setPinStatus(pinNumber, value){
@@ -38,13 +73,25 @@ function setPinStatus(pinNumber, value){
     return data;
 }
 
-// List item HTML Example
-// <li>
-// <label for="flip-select-1">IN1:</label>
-// <select id="flip-select-1" name="flip-select-1" data-role="slider">
-//   <option>Off</option>
-//   <option>On</option>
-// </select>
-// </li>
+function getPinStatusTest(){
+    var pinList = [];
+    for (i=0; i<8; i++){
+        var object = {
+            "pin_number": i,
+            "pin_name": "IN:" + i,
+            "value": 0
+        };
+        pinList.push(object);
+    }
+    var data = {
+        "data": pinList
+    };
+
+    return data.data;
+}
+
+setInterval(function(){
+    updateSwitches();
+}, 30000);
 
 // $("#flip-select-1").val('On').slider('refresh');

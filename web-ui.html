@@ -7,8 +7,8 @@
   <link rel="shortcut icon" href="./favicon.ico">
   <link rel="stylesheet" href="./csslib/themes/default/jquery.mobile-1.4.5.min.css">
   <script src="./jslib/jquery.js"></script>
-  <script src="./jslib/jquery.mobile-1.4.5.min.js"></script>
   <script src="web-ui.js"></script>
+  <script src="./jslib/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <body>
 <div data-role="page" id="startpage" data-theme="b">
@@ -17,30 +17,8 @@
     <h1>Remote Control</h1>
   </div>
   <div role="main" class="ui-content">
-     <div data-demo-html="true" data-demo-css="#custom-label-flipswitch">
-        <ul data-role="listview" data-inset="true">
-          <li>
-            <label for="flip-select-1">IN1:</label>
-            <select id="flip-select-1" name="flip-select-1" data-role="slider">
-              <option>Off</option>
-              <option>On</option>
-            </select>
-          </li>
-          <li>
-            <label for="flip-select-2">IN2:</label>
-            <select id="flip-select-2" name="flip-select-2" data-role="slider">
-              <option>Off</option>
-              <option>On</option>
-            </select>
-          </li>
-          <li>
-            <label for="flip-select-3">IN3:</label>
-            <select id="flip-select-3" name="flip-select-3" data-role="slider">
-              <option>Off</option>
-              <option>On</option>
-            </select>
-          </li>
-        </ul>
+     <div data-demo-html="true">
+        <ul data-role="listview" data-inset="true" id="switches"></ul>
       </div>
   </div>
 
