@@ -68,19 +68,40 @@ function setPinStatus(pinNumber, value){
 
 function getPinStatusTest(){
     var pinList = [];
-    for (i=0; i<8; i++){
-        var object = {
-            "pin_number": i,
-            "pin_name": "IN:" + i,
-            "value": 0
-        };
-        pinList.push(object);
-    }
+
+    var object1 = {
+        "pin_number": 0,
+        "pin_name": "Audio System",
+        "value": 1
+    };
+
+    var object2 = {
+        "pin_number": 1,
+        "pin_name": "Xbox 360",
+        "value": 0
+    };
+
+    var object3 = {
+        "pin_number": 2,
+        "pin_name": "Xbox 360 Slim",
+        "value": 0
+    };
+
+    var object4 = {
+        "pin_number": 3,
+        "pin_name": "Fan",
+        "value": 1
+    };
+    
+    pinList.push(object1);
+    pinList.push(object2);
+    pinList.push(object3);
+    pinList.push(object4);
+    
     var data = {
         "data": pinList
     };
 
     return data.data;
 }
-
 // $("#flip-select-1").val('On').slider('refresh');
