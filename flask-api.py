@@ -37,8 +37,7 @@ def pin_status(pin_number):
 
 
 def pin_update(pin_number, value):
-    if pin_number in VALID_BCM_PIN_NUMBERS and \
-            value in VALID_HIGH_VALUES + VALID_LOW_VALUES:
+    if pin_number in VALID_BCM_PIN_NUMBERS:
         GPIO.output(pin_number, value)
         new_value = GPIO.input(pin_number)
         data = {'status': 'SUCCESS',
@@ -53,16 +52,17 @@ def pin_update(pin_number, value):
     return data
 
 
-@app.route("/", methods=['GET'])
+@app.route("/api/v1/ping/", methods=['GET'])
 def api_status():
     if request.method == 'GET':
         data = {'api_name': 'RPi GPIO API',
                 'version': '1.0',
-                'status': 'OK'}
+                'status': 'SUCCESS',
+                'response': 'pong'}
         return jsonify(data)
 
 
-@app.route("/gpio/<pin_number>/", methods=['POST', 'GET'])
+@app.route("/api/v1/gpio/<pin_number>/", methods=['POST', 'GET'])
 def gpio_pin(pin_number):
     pin_number = int(pin_number)
     if request.method == 'GET':
@@ -80,7 +80,17 @@ def gpio_pin(pin_number):
     return jsonify(data)
 
 
-@app.route("/gpio/all-high/", methods=['POST'])
+@app.route("/api/v1/gpio/status/", methods=['GET'])
+def gpio_status():
+    data_list = []
+    for pin in VALID_BCM_PIN_NUMBERS:
+        data_list.append(pin_status(pin))
+
+    data = {'data': data_list}
+    return jsonify(data)
+
+
+@app.route("/api/v1/gpio/all-high/", methods=['POST'])
 def gpio_all_high():
     data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
@@ -90,7 +100,7 @@ def gpio_all_high():
     return jsonify(data)
 
 
-@app.route("/gpio/all-low/", methods=['POST'])
+@app.route("/api/v1/gpio/all-low/", methods=['POST'])
 def gpio_all_low():
     data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
@@ -98,12 +108,6 @@ def gpio_all_low():
 
     data = {'data': data_list}
     return jsonify(data)
-
-
-@app.route("/auth/", methods=['POST'])
-def generate_auth_key():
-    if request.method == 'POST':
-        pass
 
 
 if __name__ == "__main__":
