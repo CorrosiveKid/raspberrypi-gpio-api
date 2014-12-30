@@ -1,8 +1,17 @@
 $(document).ready(function() {
     buildHTML();
-    //updateSwitches();
     $(".flipswitch").on('change', function(){
-        console.log($(this).attr("pin-number") + ' - ' + $(this).val());
+        var currentValue = $(this).val();
+        var pinNumber = $(this).attr("pin-number");
+
+        if (currentValue === "On"){
+            // setPinStatus(pinNumber, 1);
+            console.log("setPinStatus(" + pinNumber + ", 1)");
+        }
+        else if (currentValue === "Off"){
+            // setPinStatus(pinNumber, 0);
+            console.log("setPinStatus(" + pinNumber + ", 0)");
+        }
     });
 });
 
@@ -18,22 +27,6 @@ function buildHTML(){
         $select.append($optionOff, $optionOn);
         $listItem.append($label, $select);
         $("#switches").append($listItem);
-    });
-}
-
-function updateSwitches(){
-    // var pins = getPinStatus();
-    var pins = getPinStatusTest();
-    console.log("Updating Switches")
-    pins.forEach(function(pin) {
-        var id = "#flip-select-" + pin.pin_number;
-
-        if (pin.value == 0){
-            $(id).val('Off').slider('refresh');
-        }
-        else{
-            $(id).val('On').slider('refresh');
-        }
     });
 }
 
@@ -89,9 +82,5 @@ function getPinStatusTest(){
 
     return data.data;
 }
-
-setInterval(function(){
-    updateSwitches();
-}, 30000);
 
 // $("#flip-select-1").val('On').slider('refresh');
