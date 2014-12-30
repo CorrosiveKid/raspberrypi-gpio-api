@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import RPi.GPIO as GPIO
 
 app = Flask(__name__)
@@ -15,18 +15,17 @@ PIN_NAMES = {'17': 'IN1',
              '25': 'IN7',
              '4': 'IN8'}
 
-def init():
-    GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
-    for pin in VALID_BCM_PIN_NUMBERS:
-        GPIO.setup(pin, GPIO.OUT)
+for pin in VALID_BCM_PIN_NUMBERS:
+    GPIO.setup(pin, GPIO.OUT)
 
 
 def pin_status(pin_number):
     if pin_number in VALID_BCM_PIN_NUMBERS:
-        value = GPIO.output(pin_number)
+        value = GPIO.input(pin_number)
         data = {'pin_number': pin_number,
-                'pin_name': PIN_NAMES[pin_number],
+                'pin_name': PIN_NAMES[str(pin_number)],
                 'value': value,
                 'status': 'SUCCESS',
                 'error': None}
@@ -38,11 +37,15 @@ def pin_status(pin_number):
 
 
 def pin_update(pin_number, value):
-    if pin_number in VALID_BCM_PIN_NUMBERS and 
+    if pin_number in VALID_BCM_PIN_NUMBERS and \
             value in VALID_HIGH_VALUES + VALID_LOW_VALUES:
-        GPIO.input(pin_number, value)
+        GPIO.output(pin_number, value)
+        new_value = GPIO.input(pin_number)
         data = {'status': 'SUCCESS',
-                'error': None}
+                'error': None,
+                'pin_number': pin_number,
+                'pin_name': PIN_NAMES[str(pin_number)],
+                'new_value': new_value}
     else:
         data = {'status': 'ERROR',
                 'error': 'Invalid pin number or value.'}
@@ -59,13 +62,14 @@ def api_status():
         return jsonify(data)
 
 
-@app.route("/gpio/<pin_number>/", methods=['GET, POST'])
-def gpio_pin(int(pin_number)):
+@app.route("/gpio/<pin_number>/", methods=['POST', 'GET'])
+def gpio_pin(pin_number):
+    pin_number = int(pin_number)
     if request.method == 'GET':
         data = pin_status(pin_number)
 
     elif request.method == 'POST':
-        value = request.json['value']
+        value = request.values['value']
         if value in VALID_HIGH_VALUES:
             data = pin_update(pin_number, 1)
         elif value in VALID_LOW_VALUES:
@@ -78,16 +82,22 @@ def gpio_pin(int(pin_number)):
 
 @app.route("/gpio/all-high/", methods=['POST'])
 def gpio_all_high():
-    data = {'data': []}
+    data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
-        data['data'].append(pin_update(pin, 1))
+        data_list.append(pin_update(pin, 1))
+
+    data = {'data': data_list}
+    return jsonify(data)
 
 
 @app.route("/gpio/all-low/", methods=['POST'])
 def gpio_all_low():
-    data = {'data': []}
+    data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
-        data['data'].append(pin_update(pin, 0))
+        data_list.append(pin_update(pin, 0))
+
+    data = {'data': data_list}
+    return jsonify(data)
 
 
 @app.route("/auth/", methods=['POST'])
@@ -97,5 +107,4 @@ def generate_auth_key():
 
 
 if __name__ == "__main__":
-    init()
     app.run(host='0.0.0.0', port=80, debug=True)
