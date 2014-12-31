@@ -5,19 +5,19 @@ $(document).ready(function() {
         var pinNumber = $(this).attr("pin-number");
 
         if (currentValue === "On"){
-            // setPinStatus(pinNumber, 1);
-            console.log("setPinStatus(" + pinNumber + ", 1)");
+            setPinStatus(pinNumber, 1);
+            // console.log("setPinStatus(" + pinNumber + ", 1)");
         }
         else if (currentValue === "Off"){
-            // setPinStatus(pinNumber, 0);
-            console.log("setPinStatus(" + pinNumber + ", 0)");
+            setPinStatus(pinNumber, 0);
+            // console.log("setPinStatus(" + pinNumber + ", 0)");
         }
     });
 });
 
 function buildHTML(){
-    // var pins = getPinStatus();
-    var pins = getPinStatusTest();
+    var pins = getPinStatus();
+    // var pins = getPinStatusTest();
     pins.forEach(function(pin) {
         var $listItem = $("<li></li>");
         var $label = $("<label for='flip-select-"+ pin.pin_number +"'>" + pin.pin_name + "</label>");
@@ -32,11 +32,12 @@ function buildHTML(){
 
 function getPinStatus(){
     var data;
-    var apiEndpoint = "/api/v1/gpio/status/";
+    var apiEndpoint = "http://192.168.1.111/api/v1/gpio/status/";
 
     $.ajax({
         url: apiEndpoint,
-        type: "GET"
+        type: "GET",
+        async: false
     }).done(function(responseData) {
         console.log("GET: " + apiEndpoint  + " - Successful!");
         data = responseData;
@@ -49,12 +50,13 @@ function getPinStatus(){
 
 function setPinStatus(pinNumber, value){
     var data;
-    var apiEndpoint = "/api/v1/gpio/" + pinNumber + "/";
+    var apiEndpoint = "http://192.168.1.111/api/v1/gpio/" + pinNumber + "/";
     var postData = {"value": value};
 
     $.ajax({
         url: apiEndpoint,
         type: "POST",
+        async: false,
         data: postData
     }).done(function(responseData){
         console.log("POST: " + apiEndpoint + " - Successful!");

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import RPi.GPIO as GPIO
+from decorators import crossdomain
 
 app = Flask(__name__)
 
@@ -53,6 +54,7 @@ def pin_update(pin_number, value):
 
 
 @app.route("/api/v1/ping/", methods=['GET'])
+@crossdomain(origin='*')
 def api_status():
     if request.method == 'GET':
         data = {'api_name': 'RPi GPIO API',
@@ -63,6 +65,7 @@ def api_status():
 
 
 @app.route("/api/v1/gpio/<pin_number>/", methods=['POST', 'GET'])
+@crossdomain(origin='*')
 def gpio_pin(pin_number):
     pin_number = int(pin_number)
     if request.method == 'GET':
@@ -81,6 +84,7 @@ def gpio_pin(pin_number):
 
 
 @app.route("/api/v1/gpio/status/", methods=['GET'])
+@crossdomain(origin='*')
 def gpio_status():
     data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
@@ -91,6 +95,7 @@ def gpio_status():
 
 
 @app.route("/api/v1/gpio/all-high/", methods=['POST'])
+@crossdomain(origin='*')
 def gpio_all_high():
     data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
@@ -101,6 +106,7 @@ def gpio_all_high():
 
 
 @app.route("/api/v1/gpio/all-low/", methods=['POST'])
+@crossdomain(origin='*')
 def gpio_all_low():
     data_list = []
     for pin in VALID_BCM_PIN_NUMBERS:
