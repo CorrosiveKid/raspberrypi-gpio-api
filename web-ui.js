@@ -5,23 +5,23 @@ $(document).ready(function() {
         var pinNumber = $(this).attr("pin-number");
 
         if (currentValue === "On"){
-            setPinStatus(pinNumber, 1);
-            // console.log("setPinStatus(" + pinNumber + ", 1)");
+            // setPinStatus(pinNumber, 1);
+            console.log("setPinStatus(" + pinNumber + ", 1)");
         }
         else if (currentValue === "Off"){
-            setPinStatus(pinNumber, 0);
-            // console.log("setPinStatus(" + pinNumber + ", 0)");
+            // setPinStatus(pinNumber, 0);
+            console.log("setPinStatus(" + pinNumber + ", 0)");
         }
     });
 });
 
 function buildHTML(){
-    var pins = getPinStatus();
-    // var pins = getPinStatusTest();
+    // var pins = getPinStatus();
+    var pins = getPinStatusTest();
     pins.forEach(function(pin) {
-        var $listItem = $("<li></li>");
-        var $label = $("<label for='flip-select-"+ pin.pin_number +"'>" + pin.pin_name + "</label>");
-        var $select = $("<select id='flip-select-" + pin.pin_number + "' data-role='slider' pin-number='" + pin.pin_number + "' name='flip-select-" + pin.pin_number + "' class='flipswitch'></select>");
+        var $listItem = $("<li class='ui-grid-a'></li>");
+        var $label = $("<label class='ui-block-a custom-label' for='flip-select-"+ pin.pin_number +"'>" + pin.pin_name + "</label>");
+        var $select = $("<select id='flip-select-" + pin.pin_number + "' data-role='slider' pin-number='" + pin.pin_number + "' name='flip-select-" + pin.pin_number + "' class='flipswitch ui-block-b'></select>");
         var $optionOn = $("<option>On</option>");
         var $optionOff = $("<option>Off</option>");
         $select.append($optionOff, $optionOn);
