@@ -1,6 +1,6 @@
 # Raspberry Pi GPIO API #
 
-This is a simple RESTful API built with Python on Flask to control the GPIO pins of a Raspberry Pi. Please note that this application can only be run on a Raspberry Pi and the GPIO pin numbering is in BCM format.
+This is a simple RESTful API built with Python on Flask to control an 8 channel relay module with the GPIO pins of a Raspberry Pi. Please note that this application can only be run on a Raspberry Pi and the GPIO pin numbering is in BCM format.
 
 ## Getting Started ##
 
@@ -43,6 +43,17 @@ You're all set! :D
 * GET - Returns the status of the API.
 * POST - Not supported.
 
+Example GET response:
+```
+{
+    'api_name': 'RPi GPIO API',
+    'response': 'pong',
+    'status': 'SUCCESS',
+    'version': '1.0'
+}
+```
+
+
 ** /api/v1/gpio/<pin_number>/ **
 
 * Supported Methods - GET, POST
@@ -51,11 +62,65 @@ You're all set! :D
     * Parameters supported
         * value (Valid values are 0 or 1)
 
+Example GET response:
+```
+{
+    'pin_number': 17,
+    'pin_name': 'Bedroom Lights',
+    'value': 1,
+    'status': 'SUCCESS',
+    'error': null
+}
+```
+
+Example POST response:
+```
+{
+    'pin_number': 17,
+    'pin_name': 'Bedroom Lights',
+    'new_value': 1,
+    'status': 'SUCCESS',
+    'error': null
+}
+```
+
+
 ** /api/v1/gpio/status/ **
 
 * Supported Methods - GET
 * GET - Returns the status all the GPIO pins.
 * POST - Not supported.
+
+Example GET response:
+```
+{
+    'data': [
+        {
+            'pin_number': 17,
+            'pin_name': 'Bedroom Lights',
+            'value': 1,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 4,
+            'pin_name': 'Bedroom TV',
+            'value': 1,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 22,
+            'pin_name': 'Living Room Lights',
+            'value': 0,
+            'status': 'SUCCESS',
+            'error': null
+        }
+    ]
+}
+```
+
+
 
 ** /api/v1/gpio/all-high/ **
 
@@ -63,8 +128,67 @@ You're all set! :D
 * GET - Not supported.
 * POST - Sets the GPIO value to 1 on all the pins.
 
+Example POST response:
+```
+{
+    'data': [
+        {
+            'pin_number': 17,
+            'pin_name': 'Bedroom Lights',
+            'new_value': 1,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 4,
+            'pin_name': 'Bedroom TV',
+            'new_value': 1,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 22,
+            'pin_name': 'Living Room Lights',
+            'new_value': 1,
+            'status': 'SUCCESS',
+            'error': null
+        }
+    ]
+}
+```
+
+
 ** /api/v1/gpio/all-low/ **
 
 * Supported Methods - POST
 * GET - Not supported.
 * POST - Sets the GPIO value to 0 on all the pins.
+
+Example POST response:
+```
+{
+    'data': [
+        {
+            'pin_number': 17,
+            'pin_name': 'Bedroom Lights',
+            'new_value': 0,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 4,
+            'pin_name': 'Bedroom TV',
+            'new_value': 0,
+            'status': 'SUCCESS',
+            'error': null
+        },
+        {
+            'pin_number': 22,
+            'pin_name': 'Living Room Lights',
+            'new_value': 0,
+            'status': 'SUCCESS',
+            'error': null
+        }
+    ]
+}
+```
