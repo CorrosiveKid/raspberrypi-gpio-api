@@ -37,7 +37,7 @@ You're all set! :D
 
 ## API endpoints ##
 
-** /api/v1/ping/ **
+**/api/v1/ping/**
 
 * Supported Methods - GET
 * GET - Returns the status of the API.
@@ -54,7 +54,7 @@ Example GET response:
 ```
 
 
-** /api/v1/gpio/<pin_number>/ **
+**/api/v1/gpio/<pin_number>/**
 
 * Supported Methods - GET, POST
 * GET - Returns the status of specified GPIO BCM pin number.
@@ -85,7 +85,7 @@ Example POST response:
 ```
 
 
-** /api/v1/gpio/status/ **
+**/api/v1/gpio/status/**
 
 * Supported Methods - GET
 * GET - Returns the status all the GPIO pins.
@@ -122,7 +122,7 @@ Example GET response:
 
 
 
-** /api/v1/gpio/all-high/ **
+**/api/v1/gpio/all-high/**
 
 * Supported Methods - POST
 * GET - Not supported.
@@ -158,7 +158,7 @@ Example POST response:
 ```
 
 
-** /api/v1/gpio/all-low/ **
+**/api/v1/gpio/all-low/**
 
 * Supported Methods - POST
 * GET - Not supported.
@@ -192,3 +192,6 @@ Example POST response:
     ]
 }
 ```
+
+## Future Tasks ##
+* Add API authentication.
