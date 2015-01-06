@@ -54,7 +54,7 @@ Example GET response:
 ```
 
 
-**/api/v1/gpio/<pin_number>/**
+**/api/v1/gpio/\<pin_number\>/**
 
 * Supported Methods - GET, POST
 * GET - Returns the status of specified GPIO BCM pin number.
